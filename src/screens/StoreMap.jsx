@@ -3,15 +3,16 @@ import PrimaryButton from '../components/PrimaryButton'
 import StatusChip from '../components/StatusChip'
 import Icon from '../components/Icon'
 
-// Pins along the optimized route
+// Each pin has an exact position on the map grid plus navigation metadata.
+// order = sequence along the optimized route; dist/aisle drive the 3D nav.
 const PINS = [
-  { x: 60, y: 250, emoji: '🥛', label: 'Dairy' },
-  { x: 150, y: 150, emoji: '🍅', label: 'Produce' },
-  { x: 250, y: 235, emoji: '🍞', label: 'Bakery' },
-  { x: 300, y: 130, emoji: '🍝', label: 'Pantry' },
+  { id: 'milk', x: 60, y: 250, emoji: '🥛', name: 'Milk', aisle: 'Dairy', dist: 42, side: 'left', order: 1 },
+  { id: 'tomatoes', x: 150, y: 150, emoji: '🍅', name: 'Tomatoes', aisle: 'Produce', dist: 26, side: 'right', order: 2 },
+  { id: 'bread', x: 250, y: 235, emoji: '🍞', name: 'Bread', aisle: 'Bakery', dist: 33, side: 'left', order: 3 },
+  { id: 'pasta', x: 300, y: 130, emoji: '🍝', name: 'Pasta', aisle: 'Pantry', dist: 48, side: 'right', order: 4 },
 ]
 
-export default function StoreMap({ go, toast }) {
+export default function StoreMap({ go, toast, openNav }) {
   return (
     <div className="rise">
       <div className="screen-head">
@@ -24,7 +25,11 @@ export default function StoreMap({ go, toast }) {
         </div>
       </div>
 
-      <div className="map-wrap" style={{ marginTop: 18 }}>
+      <div className="map-hint">
+        <Icon name="pin" size={15} /> Tap a product to start live 3D navigation
+      </div>
+
+      <div className="map-wrap" style={{ marginTop: 10 }}>
         <svg className="map-svg" viewBox="0 0 360 360" role="img" aria-label="Store map">
           <defs>
             <linearGradient id="routeGrad" x1="0" y1="0" x2="1" y2="1">
@@ -39,17 +44,10 @@ export default function StoreMap({ go, toast }) {
 
           {/* aisles / shelves */}
           {[
-            [40, 60, 90, 26],
-            [40, 110, 90, 26],
-            [150, 60, 70, 26],
-            [240, 60, 90, 26],
-            [240, 110, 90, 26],
-            [40, 200, 70, 26],
-            [40, 250, 70, 26],
-            [150, 200, 60, 26],
-            [150, 250, 60, 26],
-            [250, 200, 80, 26],
-            [250, 250, 80, 26],
+            [40, 60, 90, 26], [40, 110, 90, 26], [150, 60, 70, 26],
+            [240, 60, 90, 26], [240, 110, 90, 26], [40, 200, 70, 26],
+            [40, 250, 70, 26], [150, 200, 60, 26], [150, 250, 60, 26],
+            [250, 200, 80, 26], [250, 250, 80, 26],
           ].map(([x, y, w, h], i) => (
             <rect key={i} x={x} y={y} width={w} height={h} rx="6" fill="#dce7f4" />
           ))}
@@ -63,25 +61,28 @@ export default function StoreMap({ go, toast }) {
           {/* optimized route */}
           <path
             d="M65 305 L60 250 L150 150 L250 235 L300 130 L295 305"
-            fill="none"
-            stroke="url(#routeGrad)"
-            strokeWidth="5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeDasharray="10 9"
+            fill="none" stroke="url(#routeGrad)" strokeWidth="5"
+            strokeLinecap="round" strokeLinejoin="round" strokeDasharray="10 9"
           >
             <animate attributeName="stroke-dashoffset" from="190" to="0" dur="2.4s" repeatCount="indefinite" />
           </path>
 
-          {/* pins */}
-          {PINS.map((p, i) => (
-            <g key={i}>
+          {/* tappable product pins at their exact positions */}
+          {PINS.map((p) => (
+            <g key={p.id} className="map-pin" onClick={() => openNav(p)} style={{ cursor: 'pointer' }}>
+              <circle cx={p.x} cy={p.y} r="19" fill="#34d399" opacity="0.18">
+                <animate attributeName="r" values="17;22;17" dur="2s" repeatCount="indefinite" />
+              </circle>
               <circle cx={p.x} cy={p.y} r="15" fill="#fff" stroke="#34d399" strokeWidth="2.5" />
               <text x={p.x} y={p.y + 5} textAnchor="middle" fontSize="15">{p.emoji}</text>
+              <g transform={`translate(${p.x}, ${p.y - 25})`}>
+                <rect x="-22" y="-11" width="44" height="18" rx="9" fill="#1f2937" />
+                <text x="0" y="2" textAnchor="middle" fontSize="10" fontWeight="700" fill="#fff">{p.name}</text>
+              </g>
             </g>
           ))}
 
-          {/* start dot */}
+          {/* start / end dots */}
           <circle cx="65" cy="305" r="7" fill="#34d399" stroke="#fff" strokeWidth="2.5" />
           <circle cx="295" cy="305" r="7" fill="#3b82f6" stroke="#fff" strokeWidth="2.5" />
         </svg>
@@ -117,7 +118,7 @@ export default function StoreMap({ go, toast }) {
       </Card>
 
       <div style={{ marginTop: 16 }}>
-        <PrimaryButton icon="nav" onClick={() => toast('Navigation started (demo)')}>
+        <PrimaryButton icon="nav" onClick={() => openNav(PINS[0])}>
           Start Navigation
         </PrimaryButton>
       </div>

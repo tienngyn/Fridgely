@@ -9,6 +9,7 @@ import StoreMap from './screens/StoreMap'
 import Fridge from './screens/Fridge'
 import Recipes from './screens/Recipes'
 import Household from './screens/Household'
+import StoreNav from './screens/StoreNav'
 import './styles/components.css'
 import './styles/screens.css'
 
@@ -18,6 +19,8 @@ const NAV_TABS = ['home', 'list', 'map', 'fridge', 'recipes']
 export default function App() {
   const [route, setRoute] = useState('onboarding')
   const [toast, setToast] = useState(null)
+  // product whose live 3D navigation overlay is open (null = closed)
+  const [navTarget, setNavTarget] = useState(null)
 
   const showToast = useCallback((msg) => {
     setToast(msg)
@@ -39,7 +42,7 @@ export default function App() {
     onboarding: <Onboarding onStart={() => go('home')} />,
     home: <Home go={go} toast={showToast} />,
     list: <ShoppingList go={go} toast={showToast} />,
-    map: <StoreMap go={go} toast={showToast} />,
+    map: <StoreMap go={go} toast={showToast} openNav={setNavTarget} />,
     fridge: <Fridge go={go} toast={showToast} />,
     recipes: <Recipes go={go} toast={showToast} />,
     household: <Household go={go} toast={showToast} />,
@@ -63,6 +66,14 @@ export default function App() {
           )}
 
           {showNav && <BottomNav active={route} onNavigate={go} />}
+
+          {navTarget && (
+            <StoreNav
+              product={navTarget}
+              onClose={() => setNavTarget(null)}
+              onArrived={() => showToast(`Arrived at ${navTarget.name}`)}
+            />
+          )}
 
           {toast && (
             <div className="toast">
