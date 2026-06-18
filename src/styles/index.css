@@ -150,12 +150,13 @@ p {
   fill: var(--text-dark);
 }
 
-/* scrollable screen body */
+/* scrollable screen body — the ONLY thing that scrolls */
 .screen {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain; /* don't chain scroll/bounce to the page */
   scrollbar-width: none;
 }
 .screen::-webkit-scrollbar {
@@ -235,12 +236,29 @@ p {
 }
 
 @media (max-width: 460px) {
+  /* lock the page: behaves like a fullscreen native app */
+  html,
+  body {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: manipulation;
+  }
   body {
     padding: 0;
+    min-height: 0;
+  }
+  .device-stage {
+    height: 100%;
+    gap: 0;
   }
   .phone {
     width: 100vw;
-    height: 100vh;
+    height: 100vh; /* fallback */
+    height: 100dvh; /* tracks the real visible area incl. browser chrome */
     border-radius: 0;
     padding: 0;
     box-shadow: none;
@@ -253,5 +271,12 @@ p {
   }
   .stage-hint {
     display: none;
+  }
+  /* keep the floating nav clear of the home indicator */
+  .bottomnav {
+    bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+  .screen--with-nav .screen__pad {
+    padding-bottom: calc(110px + env(safe-area-inset-bottom));
   }
 }
