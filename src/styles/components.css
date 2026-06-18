@@ -1,0 +1,320 @@
+/* ===== Card ===== */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(31, 41, 55, 0.04);
+}
+
+.card--flush {
+  padding: 0;
+  overflow: hidden;
+}
+
+.card--tap {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  cursor: pointer;
+}
+.card--tap:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+.card--tap:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+/* ===== PrimaryButton ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 18px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--grad-green);
+  box-shadow: var(--shadow-green);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(52, 211, 153, 0.42);
+}
+.btn:active {
+  transform: translateY(0) scale(0.985);
+}
+
+.btn--blue {
+  background: var(--grad-blue);
+  box-shadow: var(--shadow-blue);
+}
+.btn--blue:hover {
+  box-shadow: 0 16px 30px rgba(59, 130, 246, 0.4);
+}
+
+.btn--brand {
+  background: var(--grad-brand);
+  box-shadow: 0 14px 28px rgba(56, 152, 200, 0.4);
+}
+
+.btn--ghost {
+  background: #fff;
+  color: var(--text-dark);
+  border: 1.5px solid #e5e7eb;
+  box-shadow: var(--shadow-sm);
+}
+.btn--ghost:hover {
+  border-color: var(--green);
+  color: var(--green-dark);
+  box-shadow: var(--shadow);
+}
+
+.btn--soft {
+  background: var(--mint);
+  color: var(--green-dark);
+  box-shadow: none;
+}
+.btn--soft:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.btn--sm {
+  width: auto;
+  padding: 11px 18px;
+  font-size: 14px;
+  border-radius: 14px;
+}
+
+.btn--disabled {
+  background: #eef1f5;
+  color: #9aa3af;
+  box-shadow: none;
+  cursor: not-allowed;
+  border: 1.5px dashed #cfd6df;
+}
+.btn--disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.btn__demo-tag {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  background: #d1d8e0;
+  color: #5b6573;
+  padding: 3px 7px;
+  border-radius: 7px;
+}
+
+/* ===== StatusChip ===== */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+.chip__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.chip--fresh {
+  background: var(--mint);
+  color: #047857;
+}
+.chip--low {
+  background: var(--amber-bg);
+  color: #b45309;
+}
+.chip--expire {
+  background: var(--red-bg);
+  color: #dc2626;
+}
+.chip--info {
+  background: var(--accent-blue);
+  color: #1d4ed8;
+}
+.chip--neutral {
+  background: #eef1f5;
+  color: #475569;
+}
+
+/* ===== ProductItem ===== */
+.product {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 8px;
+}
+.product + .product {
+  border-top: 1px solid #f1f4f8;
+}
+
+.product__emoji {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  background: var(--bg);
+  flex-shrink: 0;
+}
+.product__body {
+  flex: 1;
+  min-width: 0;
+}
+.product__name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+.product__name.is-done {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+.product__meta {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* checkbox */
+.checkbox {
+  width: 26px;
+  height: 26px;
+  border-radius: 9px;
+  border: 2px solid #d4dae3;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: #fff;
+  transition: all 0.18s ease;
+  flex-shrink: 0;
+}
+.checkbox.is-checked {
+  background: var(--grad-green);
+  border-color: transparent;
+  box-shadow: 0 4px 10px rgba(52, 211, 153, 0.4);
+}
+.checkbox svg {
+  opacity: 0;
+  transform: scale(0.6);
+  transition: all 0.18s ease;
+}
+.checkbox.is-checked svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ===== BottomNav ===== */
+.bottomnav {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  height: 72px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border-radius: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 10px 30px rgba(31, 41, 55, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 6px;
+  z-index: 30;
+}
+.bottomnav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-secondary);
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 6px 4px;
+  border-radius: 14px;
+  transition: color 0.18s ease, transform 0.18s ease;
+  flex: 1;
+}
+.bottomnav__item:hover {
+  color: var(--green-dark);
+}
+.bottomnav__item.is-active {
+  color: var(--green-dark);
+}
+.bottomnav__icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  transition: transform 0.2s ease;
+}
+.bottomnav__item.is-active .bottomnav__icon {
+  transform: translateY(-1px);
+}
+.bottomnav__item.is-active .bottomnav__icon::after {
+  content: '';
+  position: absolute;
+  inset: -8px -10px;
+  background: var(--mint);
+  border-radius: 14px;
+  z-index: -1;
+}
+
+/* ===== Screen header ===== */
+.screen-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.screen-head__back {
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  place-items: center;
+  color: var(--text-dark);
+  transition: transform 0.16s ease;
+}
+.screen-head__back:hover {
+  transform: translateX(-2px);
+}
+.screen-title {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-dark);
+}
+.screen-sub {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 3px;
+}
+
+.pill-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  background: var(--accent-blue);
+  color: #1d4ed8;
+}
