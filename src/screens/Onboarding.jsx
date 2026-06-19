@@ -16,7 +16,9 @@ export default function Onboarding({ onStart }) {
       <div className="onb__logo">
         <Logo size={104} />
       </div>
-      <h1 className="onb__name">Fridgely</h1>
+      <div className="onb__brand">
+        <span className="brand-word">Fridgely</span>
+      </div>
       <p className="onb__slogan">Your smart way from store to fridge</p>
       <p className="onb__text">Plan smarter, shop faster, and waste less food.</p>
 
