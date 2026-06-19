@@ -1,0 +1,14 @@
+{
+  "name": "Fridgely",
+  "short_name": "Fridgely",
+  "description": "From Store to Fridge — smart grocery shopping and food management.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#34D399",
+  "theme_color": "#34D399",
+  "icons": [
+    { "src": "icon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any" },
+    { "src": "icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any" },
+    { "src": "icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any maskable" }
+  ]
+}
