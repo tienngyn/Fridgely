@@ -9,6 +9,7 @@ import Fridge from './screens/Fridge'
 import Recipes from './screens/Recipes'
 import Household from './screens/Household'
 import StoreNav from './screens/StoreNav'
+import Checkout from './screens/Checkout'
 import './styles/components.css'
 import './styles/screens.css'
 
@@ -18,8 +19,10 @@ const NAV_TABS = ['home', 'list', 'map', 'fridge', 'recipes']
 export default function App() {
   const [route, setRoute] = useState('onboarding')
   const [toast, setToast] = useState(null)
-  // product whose live 3D navigation overlay is open (null = closed)
+  // live navigation overlay target (null = closed)
   const [navTarget, setNavTarget] = useState(null)
+  // items to show on the end-of-tour checkout (null = closed)
+  const [checkout, setCheckout] = useState(null)
 
   const showToast = useCallback((msg) => {
     setToast(msg)
@@ -66,8 +69,16 @@ export default function App() {
             <StoreNav
               stops={navTarget.stops}
               onClose={() => setNavTarget(null)}
+              onFinish={(items) => {
+                setNavTarget(null)
+                setCheckout(items)
+              }}
               toast={showToast}
             />
+          )}
+
+          {checkout && (
+            <Checkout items={checkout} onClose={() => setCheckout(null)} toast={showToast} />
           )}
 
           {toast && (

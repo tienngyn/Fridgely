@@ -58,7 +58,7 @@ function locate(route, t) {
   }
 }
 
-export default function StoreNav({ stops, onClose, toast }) {
+export default function StoreNav({ stops, onClose, onFinish, toast }) {
   const isTour = stops.length > 1
   const [index, setIndex] = useState(0)
   const product = stops[index]
@@ -246,8 +246,11 @@ export default function StoreNav({ stops, onClose, toast }) {
               <Icon name="chevron" size={18} strokeWidth={2.6} />
             </button>
           ) : (
-            <button className="navmap__exit navmap__exit--end" onClick={() => { toast?.(isTour ? 'Tour complete 🎉' : 'Collected'); onClose() }}>
-              <Icon name="check" size={18} strokeWidth={2.6} /> {isTour ? 'Finish tour' : 'Mark as collected'}
+            <button
+              className="navmap__exit navmap__exit--end"
+              onClick={() => (isTour ? onFinish?.(stops) : onClose())}
+            >
+              <Icon name="check" size={18} strokeWidth={2.6} /> {isTour ? 'Finish & checkout' : 'Mark as collected'}
             </button>
           )
         ) : (

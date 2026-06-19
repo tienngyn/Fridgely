@@ -6,10 +6,10 @@ import Icon from '../components/Icon'
 
 // Items currently on the shopping list — always pinned, form the optimized route.
 const LIST_ITEMS = [
-  { id: 'milk', x: 60, y: 250, emoji: '🥛', name: 'Milk', aisle: 'Dairy', dist: 42, side: 'left', order: 1, onList: true },
-  { id: 'tomatoes', x: 150, y: 150, emoji: '🍅', name: 'Tomatoes', aisle: 'Produce', dist: 26, side: 'right', order: 2, onList: true },
-  { id: 'bread', x: 250, y: 235, emoji: '🍞', name: 'Bread', aisle: 'Bakery', dist: 33, side: 'left', order: 3, onList: true },
-  { id: 'pasta', x: 300, y: 130, emoji: '🍝', name: 'Pasta', aisle: 'Pantry', dist: 48, side: 'right', order: 4, onList: true },
+  { id: 'milk', x: 60, y: 250, emoji: '🥛', name: 'Milk', aisle: 'Dairy', dist: 42, side: 'left', order: 1, onList: true, price: 1.29 },
+  { id: 'tomatoes', x: 150, y: 150, emoji: '🍅', name: 'Tomatoes', aisle: 'Produce', dist: 26, side: 'right', order: 2, onList: true, price: 2.49 },
+  { id: 'bread', x: 250, y: 235, emoji: '🍞', name: 'Bread', aisle: 'Bakery', dist: 33, side: 'left', order: 3, onList: true, price: 2.19 },
+  { id: 'pasta', x: 300, y: 130, emoji: '🍝', name: 'Pasta', aisle: 'Pantry', dist: 48, side: 'right', order: 4, onList: true, price: 1.79 },
 ]
 
 // The wider store catalog you can search through.
