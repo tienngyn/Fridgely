@@ -115,41 +115,6 @@ p {
   z-index: 50;
 }
 
-/* status bar */
-.statusbar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 54px;
-  padding: 18px 32px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 14px;
-  font-weight: 700;
-  z-index: 40;
-  pointer-events: none;
-}
-
-.statusbar__icons {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.statusbar.is-light,
-.statusbar.is-light svg {
-  color: #fff;
-  fill: #fff;
-}
-
-.statusbar.is-dark,
-.statusbar.is-dark svg {
-  color: var(--text-dark);
-  fill: var(--text-dark);
-}
-
 /* scrollable screen body — the ONLY thing that scrolls */
 .screen {
   flex: 1;
@@ -164,7 +129,7 @@ p {
 }
 
 .screen__pad {
-  padding: 64px 20px 28px;
+  padding: 40px 20px 28px;
 }
 
 .screen--with-nav .screen__pad {
@@ -271,6 +236,20 @@ p {
   }
   .stage-hint {
     display: none;
+  }
+  /* start content just below the real device status bar / notch */
+  .screen__pad {
+    padding-top: calc(env(safe-area-inset-top, 0px) + 10px);
+  }
+  .onb {
+    padding-top: calc(env(safe-area-inset-top, 0px) + 40px);
+  }
+  .navmap__close,
+  .navmap__compass {
+    top: calc(env(safe-area-inset-top, 0px) + 10px);
+  }
+  .navmap__banner {
+    top: calc(env(safe-area-inset-top, 0px) + 60px);
   }
   /* keep the floating nav clear of the home indicator */
   .bottomnav {

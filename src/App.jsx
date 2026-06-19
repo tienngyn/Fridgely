@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react'
-import StatusBar from './components/StatusBar'
 import BottomNav from './components/BottomNav'
 import Icon from './components/Icon'
 import Onboarding from './screens/Onboarding'
@@ -35,8 +34,6 @@ export default function App() {
 
   const isOnboarding = route === 'onboarding'
   const showNav = NAV_TABS.includes(route)
-  // light status bar on dark/gradient backgrounds
-  const statusTheme = isOnboarding ? 'light' : 'dark'
 
   const screens = {
     onboarding: <Onboarding onStart={() => go('home')} />,
@@ -53,8 +50,6 @@ export default function App() {
       <div className="phone">
         <div className="phone__notch" />
         <div className="phone__screen">
-          <StatusBar theme={statusTheme} />
-
           {isOnboarding ? (
             <div className="screen">{screens.onboarding}</div>
           ) : (
