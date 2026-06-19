@@ -147,6 +147,15 @@ export default function StoreMap({ go, toast, openNav }) {
             <rect key={i} x={x} y={y} width={w} height={h} rx="6" fill="#dce7f4" />
           ))}
 
+          {/* aisle labels */}
+          {[
+            ['PRODUCE', 185, 100], ['SNACKS', 285, 78], ['PANTRY', 290, 150],
+            ['DRINKS', 290, 188], ['DAIRY', 75, 188], ['MEAT', 150, 285], ['BAKERY', 285, 285],
+          ].map(([name, x, y]) => (
+            <text key={name} x={x} y={y} textAnchor="middle" fontSize="8.5" fontWeight="800"
+              letterSpacing="0.6" fill="#9aa8bd">{name}</text>
+          ))}
+
           <rect x="26" y="310" width="78" height="26" rx="8" fill="#d1fae5" />
           <text x="65" y="327" textAnchor="middle" fontSize="12" fontWeight="700" fill="#047857">Entrance</text>
           <rect x="256" y="310" width="78" height="26" rx="8" fill="#dbeafe" />
@@ -177,7 +186,7 @@ export default function StoreMap({ go, toast, openNav }) {
               <g
                 key={p.id}
                 className={`map-pin ${isSel ? 'is-selected' : ''} ${dim ? 'is-dim' : ''}`}
-                onClick={() => openNav(p)}
+                onClick={() => openNav({ stops: [p] })}
                 style={{ cursor: 'pointer' }}
               >
                 <circle cx={p.x} cy={p.y} r="19" fill={isSel ? '#3b82f6' : '#34d399'} opacity="0.18">
@@ -212,7 +221,7 @@ export default function StoreMap({ go, toast, openNav }) {
             </button>
           </div>
           <div style={{ marginTop: 14 }}>
-            <PrimaryButton icon="nav" onClick={() => openNav(selected)}>
+            <PrimaryButton icon="nav" onClick={() => openNav({ stops: [selected] })}>
               Start Navigation
             </PrimaryButton>
           </div>
@@ -249,8 +258,8 @@ export default function StoreMap({ go, toast, openNav }) {
           </Card>
 
           <div style={{ marginTop: 16 }}>
-            <PrimaryButton icon="nav" onClick={() => openNav(LIST_ITEMS[0])}>
-              Start Navigation
+            <PrimaryButton icon="route" onClick={() => openNav({ stops: LIST_ITEMS })}>
+              Start Tour · {LIST_ITEMS.length} stops
             </PrimaryButton>
           </div>
         </>

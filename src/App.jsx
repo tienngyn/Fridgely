@@ -69,9 +69,9 @@ export default function App() {
 
           {navTarget && (
             <StoreNav
-              product={navTarget}
+              stops={navTarget.stops}
               onClose={() => setNavTarget(null)}
-              onArrived={() => showToast(`Arrived at ${navTarget.name}`)}
+              toast={showToast}
             />
           )}
 
