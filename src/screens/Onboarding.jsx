@@ -43,12 +43,6 @@ export default function Onboarding({ onStart }) {
         Get Started
         <Icon name="chevron" size={20} strokeWidth={2.4} />
       </button>
-
-      <div className="onb__dots">
-        <span className="onb__dot is-on" />
-        <span className="onb__dot" />
-        <span className="onb__dot" />
-      </div>
     </div>
   )
 }

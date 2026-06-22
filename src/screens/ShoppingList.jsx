@@ -1,29 +1,49 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import Card from '../components/Card'
 import ProductItem from '../components/ProductItem'
 import PrimaryButton from '../components/PrimaryButton'
 import StatusChip from '../components/StatusChip'
 import Icon from '../components/Icon'
 
-const ITEMS = [
-  { id: 'milk', emoji: '🥛', name: 'Milk', meta: '1 L · Bio', category: 'Dairy', done: false },
-  { id: 'yogurt', emoji: '🥣', name: 'Yogurt', meta: '4 × 150 g', category: 'Dairy', done: false },
-  { id: 'cheese', emoji: '🧀', name: 'Cheese', meta: 'Gouda, 250 g', category: 'Dairy', done: true },
-  { id: 'apples', emoji: '🍎', name: 'Apples', meta: '6 pcs', category: 'Fruit', done: false },
-  { id: 'tomatoes', emoji: '🍅', name: 'Tomatoes', meta: '500 g', category: 'Fruit', done: false },
-  { id: 'bread', emoji: '🍞', name: 'Bread', meta: 'Wholegrain', category: 'Bakery', done: true },
-  { id: 'pasta', emoji: '🍝', name: 'Pasta', meta: 'Penne, 500 g', category: 'Pantry', done: false },
-]
+const CATEGORIES = ['Dairy', 'Fruit', 'Bakery', 'Pantry', 'Meat', 'Other']
 
-const CATEGORIES = ['Dairy', 'Fruit', 'Bakery', 'Pantry']
+// emoji + category guesser for freshly typed items
+const DICT = {
+  milk: ['🥛', 'Dairy'], yogurt: ['🥣', 'Dairy'], cheese: ['🧀', 'Dairy'], butter: ['🧈', 'Dairy'], eggs: ['🥚', 'Dairy'],
+  apple: ['🍎', 'Fruit'], apples: ['🍎', 'Fruit'], banana: ['🍌', 'Fruit'], bananas: ['🍌', 'Fruit'], tomato: ['🍅', 'Fruit'], tomatoes: ['🍅', 'Fruit'], lemon: ['🍋', 'Fruit'],
+  bread: ['🍞', 'Bakery'], croissant: ['🥐', 'Bakery'], bagel: ['🥯', 'Bakery'],
+  pasta: ['🍝', 'Pantry'], rice: ['🍚', 'Pantry'], coffee: ['☕', 'Pantry'], oil: ['🫒', 'Pantry'], cereal: ['🥣', 'Pantry'],
+  chicken: ['🍗', 'Meat'], fish: ['🐟', 'Meat'], beef: ['🥩', 'Meat'],
+}
+function guess(name) {
+  const k = name.trim().toLowerCase()
+  const [emoji, category] = DICT[k] || ['🛒', 'Other']
+  return { name: name.trim().replace(/^\w/, (c) => c.toUpperCase()), emoji, category }
+}
 
-export default function ShoppingList({ go, toast }) {
-  const [items, setItems] = useState(ITEMS)
-  const toggle = (id) =>
-    setItems((prev) => prev.map((it) => (it.id === id ? { ...it, done: !it.done } : it)))
+const QUICK = ['Milk', 'Bananas', 'Bread', 'Eggs', 'Coffee', 'Chicken']
 
-  const doneCount = items.filter((i) => i.done).length
-  const pct = Math.round((doneCount / items.length) * 100)
+export default function ShoppingList({ go, toast, list }) {
+  const { week, lists, activeListId, setActiveListId, addList, listDay, setListDay, items, addItems, toggleItem } = list
+  const [text, setText] = useState('')
+  const [addingList, setAddingList] = useState(false)
+  const [newListName, setNewListName] = useState('')
+
+  const dayItems = useMemo(
+    () => items.filter((it) => it.listId === activeListId && it.day === listDay),
+    [items, activeListId, listDay]
+  )
+  const doneCount = dayItems.filter((i) => i.done).length
+
+  const add = (raw) => {
+    const name = (raw ?? text).trim()
+    if (!name) return
+    addItems(activeListId, listDay, [guess(name)])
+    setText('')
+    toast(`${name} added to ${week[listDay].short}`)
+  }
+
+  const selectedDay = week[listDay]
 
   return (
     <div className="rise">
@@ -31,66 +51,134 @@ export default function ShoppingList({ go, toast }) {
         <div>
           <h1 className="screen-title">Shopping List</h1>
           <div className="screen-sub" style={{ marginTop: 6 }}>
-            <span className="pill-label">
-              <Icon name="users" size={14} /> Family List
-            </span>
+            <span className="pill-label"><Icon name="users" size={14} /> Shared with family</span>
           </div>
         </div>
       </div>
 
-      <div className="list-progress" style={{ marginTop: 18 }}>
-        <div className="row between">
-          <span style={{ fontSize: 14, fontWeight: 700 }}>
-            {doneCount} of {items.length} collected
+      {/* list switcher (multiple lists) */}
+      <div className="list-tabs">
+        {lists.map((l) => (
+          <button
+            key={l.id}
+            className={`list-tab ${l.id === activeListId ? 'is-active' : ''}`}
+            onClick={() => setActiveListId(l.id)}
+          >
+            {l.name}
+          </button>
+        ))}
+        {addingList ? (
+          <span className="list-tab list-tab--input">
+            <input
+              autoFocus
+              value={newListName}
+              placeholder="List name"
+              onChange={(e) => setNewListName(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') { addList(newListName); setNewListName(''); setAddingList(false); toast('List created') }
+                if (e.key === 'Escape') { setNewListName(''); setAddingList(false) }
+              }}
+            />
           </span>
-          <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--green-dark)' }}>{pct}%</span>
-        </div>
-        <div className="progress-bar">
-          <div className="progress-bar__fill" style={{ width: `${pct}%` }} />
-        </div>
+        ) : (
+          <button className="list-tab list-tab--add" onClick={() => setAddingList(true)} aria-label="New list">
+            <Icon name="plus" size={16} strokeWidth={2.6} /> New
+          </button>
+        )}
       </div>
 
-      {CATEGORIES.map((cat) => {
-        const catItems = items.filter((i) => i.category === cat)
-        if (!catItems.length) return null
-        return (
-          <div key={cat}>
-            <div className="cat-head">
-              <span className="cat-head__name">{cat}</span>
-              <span className="cat-head__line" />
-              <StatusChip status="neutral" dot={false}>{catItems.length}</StatusChip>
+      {/* week strip */}
+      <div className="week-strip">
+        {week.map((d) => {
+          const count = items.filter((it) => it.listId === activeListId && it.day === d.key && !it.done).length
+          return (
+            <button
+              key={d.key}
+              className={`week-day ${d.key === listDay ? 'is-active' : ''} ${d.isToday ? 'is-today' : ''}`}
+              onClick={() => setListDay(d.key)}
+            >
+              <span className="week-day__name">{d.short}</span>
+              <span className="week-day__date">{d.date}</span>
+              {count > 0 && <span className="week-day__dot">{count}</span>}
+            </button>
+          )
+        })}
+      </div>
+
+      <div className="day-head">
+        <span className="day-head__title">{selectedDay.full}{selectedDay.isToday ? ' · Today' : ''}</span>
+        {dayItems.length > 0 && (
+          <span className="day-head__meta">{doneCount}/{dayItems.length} done</span>
+        )}
+      </div>
+
+      {/* items grouped by category */}
+      {dayItems.length === 0 ? (
+        <Card className="empty-list">
+          <div className="empty-list__icn"><Icon name="list" size={26} /></div>
+          <div className="empty-list__title">Nothing planned yet</div>
+          <div className="empty-list__sub">Add products below to plan {selectedDay.short}.</div>
+        </Card>
+      ) : (
+        CATEGORIES.map((cat) => {
+          const catItems = dayItems.filter((i) => i.category === cat)
+          if (!catItems.length) return null
+          return (
+            <div key={cat}>
+              <div className="cat-head">
+                <span className="cat-head__name">{cat}</span>
+                <span className="cat-head__line" />
+                <StatusChip status="neutral" dot={false}>{catItems.length}</StatusChip>
+              </div>
+              <Card flush>
+                {catItems.map((it) => (
+                  <ProductItem
+                    key={it.id}
+                    emoji={it.emoji}
+                    name={it.name}
+                    done={it.done}
+                    checked={it.done}
+                    onToggle={() => toggleItem(it.id)}
+                  />
+                ))}
+              </Card>
             </div>
-            <Card flush>
-              {catItems.map((it) => (
-                <ProductItem
-                  key={it.id}
-                  emoji={it.emoji}
-                  name={it.name}
-                  meta={it.meta}
-                  done={it.done}
-                  checked={it.done}
-                  onToggle={() => toggle(it.id)}
-                />
-              ))}
-            </Card>
-          </div>
-        )
-      })}
+          )
+        })
+      )}
 
-      <div className="sticky-actions">
-        <PrimaryButton variant="blue" icon="route" onClick={() => go('map')}>
-          Optimize Route
-        </PrimaryButton>
-        <PrimaryButton
-          variant="ghost"
-          icon="card"
-          disabled
-          demo
-          onClick={() => toast('Payment is disabled in this demo')}
-        >
-          Pay with Fridgely
-        </PrimaryButton>
+      {/* add product */}
+      <div className="add-row">
+        <div className="add-row__field">
+          <Icon name="plus" size={18} className="muted" />
+          <input
+            className="add-row__input"
+            placeholder={`Add to ${selectedDay.short}…`}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && add()}
+          />
+          {text && (
+            <button className="add-row__btn" onClick={() => add()}>Add</button>
+          )}
+        </div>
+        <div className="quick-chips">
+          {QUICK.map((q) => (
+            <button key={q} className="quick-chip" onClick={() => add(q)}>+ {q}</button>
+          ))}
+        </div>
       </div>
+
+      {dayItems.length > 0 && (
+        <div className="sticky-actions">
+          <PrimaryButton variant="blue" icon="route" onClick={() => go('map')}>
+            Optimize Route
+          </PrimaryButton>
+          <PrimaryButton variant="ghost" icon="card" disabled demo>
+            Pay with Fridgely
+          </PrimaryButton>
+        </div>
+      )}
     </div>
   )
 }

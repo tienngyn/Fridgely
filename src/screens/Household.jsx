@@ -15,9 +15,12 @@ const NOTIFICATIONS = [
   { id: 'meal', icon: 'recipes', color: '#1d4ed8', bg: '#dbeafe', title: 'Weekly meal planning', sub: 'Sunday recipe suggestions' },
 ]
 
-export default function Household({ go, toast }) {
+export default function Household({ go, toast, list }) {
   const [toggles, setToggles] = useState({ expire: true, stock: true, meal: false })
   const flip = (id) => setToggles((t) => ({ ...t, [id]: !t[id] }))
+  const { lists, setActiveListId, addList, items } = list
+  const countFor = (id) => items.filter((it) => it.listId === id && !it.done).length
+  const openList = (id) => { setActiveListId(id); go('list') }
 
   return (
     <div className="rise">
@@ -57,17 +60,28 @@ export default function Household({ go, toast }) {
         </div>
       </Card>
 
-      <div className="section-title">Shared shopping list</div>
-      <Card tap onClick={() => go('list')}>
-        <div className="setting-row" style={{ padding: '4px' }}>
-          <div className="setting-row__icn" style={{ background: 'var(--mint)', color: '#047857' }}>
-            <Icon name="list" size={21} />
+      <div className="section-title">Shared shopping lists</div>
+      <Card>
+        {lists.map((l) => (
+          <div className="setting-row" key={l.id} onClick={() => openList(l.id)} style={{ cursor: 'pointer' }}>
+            <div className="setting-row__icn" style={{ background: 'var(--mint)', color: '#047857' }}>
+              <Icon name="list" size={21} />
+            </div>
+            <div className="setting-row__body">
+              <div className="setting-row__title">{l.name}</div>
+              <div className="setting-row__sub">{countFor(l.id)} open items · synced with all members</div>
+            </div>
+            <Icon name="chevron" size={18} className="muted" />
+          </div>
+        ))}
+        <div className="setting-row" onClick={() => { addList(); go('list') }} style={{ cursor: 'pointer' }}>
+          <div className="setting-row__icn" style={{ background: 'var(--accent-blue)', color: '#1d4ed8' }}>
+            <Icon name="plus" size={21} strokeWidth={2.4} />
           </div>
           <div className="setting-row__body">
-            <div className="setting-row__title">Family List</div>
-            <div className="setting-row__sub">12 items · synced with all members</div>
+            <div className="setting-row__title">Add a list</div>
+            <div className="setting-row__sub">Create another shared shopping list</div>
           </div>
-          <Icon name="chevron" size={18} className="muted" />
         </div>
       </Card>
 

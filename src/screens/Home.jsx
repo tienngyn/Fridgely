@@ -14,7 +14,7 @@ export default function Home({ go, toast }) {
     <div className="rise">
       <div className="home-greet">
         <div>
-          <div className="home-greet__hi">Good morning,</div>
+          <div className="home-greet__hi">Welcome back,</div>
           <div className="home-greet__name">Max Mustermann 👋</div>
         </div>
         <div className="avatar" onClick={() => go('household')} style={{ cursor: 'pointer' }}>MM</div>
