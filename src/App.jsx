@@ -99,7 +99,7 @@ export default function App() {
     onboarding: <Onboarding onStart={() => go('home')} />,
     home: <Home go={go} toast={showToast} list={listApi} />,
     list: <ShoppingList go={go} toast={showToast} list={listApi} />,
-    map: <StoreMap go={go} toast={showToast} openNav={setNavTarget} />,
+    map: <StoreMap go={go} toast={showToast} openNav={setNavTarget} list={listApi} />,
     fridge: <Fridge go={go} toast={showToast} list={listApi} />,
     recipes: <Recipes go={go} toast={showToast} list={listApi} />,
     household: <Household go={go} toast={showToast} list={listApi} />,

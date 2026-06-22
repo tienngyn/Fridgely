@@ -43,11 +43,32 @@ const AISLE_NAMES = ['Dairy', 'Produce', 'Bakery', 'Pantry', 'Drinks']
 // route that stays in the walkways: drop to the main aisle, slide across, go up the lane
 const routeTo = (p) => `M ${ENTRANCE.x} ${ENTRANCE.y} L ${ENTRANCE.x} ${AISLE_Y} L ${p.x} ${AISLE_Y} L ${p.x} ${p.y}`
 
-export default function StoreMap({ go, toast, openNav }) {
+// map a catalog product by name so list items get a shelf position
+const POS = Object.fromEntries(CATALOG.map((c) => [c.name.toLowerCase(), c]))
+
+export default function StoreMap({ go, toast, openNav, list }) {
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState(null)
   const [focused, setFocused] = useState(false)
   const [offersOpen, setOffersOpen] = useState(false)
+
+  const { items, activeListId, listDay, week, lists } = list
+  const activeList = lists.find((l) => l.id === activeListId)
+
+  // products still to buy on the active list for the selected day, matched to shelves
+  const routeItems = useMemo(() => {
+    const dayItems = items.filter((it) => it.listId === activeListId && it.day === listDay && !it.done)
+    const seen = new Set()
+    const matched = []
+    for (const it of dayItems) {
+      const pos = POS[it.name.toLowerCase()]
+      if (pos && !seen.has(pos.id)) { seen.add(pos.id); matched.push(pos) }
+    }
+    matched.sort((a, b) => a.x - b.x || a.y - b.y)
+    return matched.map((p, i) => ({ ...p, order: i + 1 }))
+  }, [items, activeListId, listDay])
+
+  const onListNames = useMemo(() => new Set(routeItems.map((r) => r.name)), [routeItems])
 
   const matches = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -59,15 +80,16 @@ export default function StoreMap({ go, toast, openNav }) {
   const reset = () => { setSelected(null); setQuery('') }
 
   const showResults = focused && query.trim() && !selected
-  const pins = selected && !selected.onList ? [...LIST_ITEMS, selected] : LIST_ITEMS
+  const inRoute = selected && routeItems.some((r) => r.id === selected.id)
+  const pins = selected && !inRoute ? [...routeItems, selected] : routeItems
 
-  // optimized comb route through all list items
+  // optimized comb route through the day's list items
   const overview = useMemo(() => {
     let d = `M ${ENTRANCE.x} ${ENTRANCE.y} L ${ENTRANCE.x} ${AISLE_Y}`
-    for (const it of LIST_ITEMS) d += ` L ${it.x} ${AISLE_Y} L ${it.x} ${it.y} L ${it.x} ${AISLE_Y}`
+    for (const it of routeItems) d += ` L ${it.x} ${AISLE_Y} L ${it.x} ${it.y} L ${it.x} ${AISLE_Y}`
     d += ` L ${CHECKOUT.x} ${AISLE_Y} L ${CHECKOUT.x} ${CHECKOUT.y}`
     return d
-  }, [])
+  }, [routeItems])
 
   return (
     <div className="rise">
@@ -77,7 +99,7 @@ export default function StoreMap({ go, toast, openNav }) {
         </button>
         <div>
           <h1 className="screen-title">Store Route</h1>
-          <div className="screen-sub">Fridgely Market · Center</div>
+          <div className="screen-sub">{activeList?.name} · {week[listDay].full}</div>
         </div>
       </div>
 
@@ -111,7 +133,7 @@ export default function StoreMap({ go, toast, openNav }) {
                     <div className="search__result-name">{p.name}</div>
                     <div className="search__result-aisle">{p.aisle} · Row {p.row} · {p.dist} m</div>
                   </div>
-                  {p.onList ? <StatusChip status="info" dot={false}>On list</StatusChip> : <Icon name="chevron" size={16} className="muted" />}
+                  {onListNames.has(p.name) ? <StatusChip status="info" dot={false}>On list</StatusChip> : <Icon name="chevron" size={16} className="muted" />}
                 </div>
               ))
             )}
@@ -228,9 +250,15 @@ export default function StoreMap({ go, toast, openNav }) {
           </Card>
 
           <div style={{ marginTop: 16 }}>
-            <PrimaryButton icon="route" onClick={() => openNav({ stops: LIST_ITEMS })}>
-              Start Tour · {LIST_ITEMS.length} stops
-            </PrimaryButton>
+            {routeItems.length > 0 ? (
+              <PrimaryButton icon="route" onClick={() => openNav({ stops: routeItems })}>
+                Start Tour · {routeItems.length} stops
+              </PrimaryButton>
+            ) : (
+              <PrimaryButton variant="ghost" icon="list" onClick={() => go('list')}>
+                Plan {week[listDay].short}'s list first
+              </PrimaryButton>
+            )}
           </div>
         </>
       )}
@@ -262,7 +290,7 @@ export default function StoreMap({ go, toast, openNav }) {
                 </div>
               ))}
             </div>
-            <PrimaryButton icon="route" onClick={() => { setOffersOpen(false); openNav({ stops: LIST_ITEMS }) }} style={{ marginTop: 16 }}>
+            <PrimaryButton icon="route" onClick={() => { setOffersOpen(false); routeItems.length ? openNav({ stops: routeItems }) : go('list') }} style={{ marginTop: 16 }}>
               Start Tour
             </PrimaryButton>
           </div>
