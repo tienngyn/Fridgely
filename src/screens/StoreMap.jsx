@@ -160,7 +160,7 @@ export default function StoreMap({ go, toast, openNav }) {
             fill="none" stroke="url(#routeGrad)" strokeWidth="5"
             strokeLinecap="round" strokeLinejoin="round" strokeDasharray="10 9"
           >
-            <animate attributeName="stroke-dashoffset" from="190" to="0" dur="7s" repeatCount="indefinite" />
+            <animate attributeName="stroke-dashoffset" from="190" to="0" dur="14s" repeatCount="indefinite" />
           </path>
 
           {/* pins */}
