@@ -160,7 +160,7 @@ export default function StoreMap({ go, toast, openNav }) {
             fill="none" stroke="url(#routeGrad)" strokeWidth="5"
             strokeLinecap="round" strokeLinejoin="round" strokeDasharray="10 9"
           >
-            <animate attributeName="stroke-dashoffset" from="190" to="0" dur="2.4s" repeatCount="indefinite" />
+            <animate attributeName="stroke-dashoffset" from="190" to="0" dur="7s" repeatCount="indefinite" />
           </path>
 
           {/* pins */}
@@ -171,7 +171,7 @@ export default function StoreMap({ go, toast, openNav }) {
               <g key={p.id} className={`map-pin ${isSel ? 'is-selected' : ''} ${dim ? 'is-dim' : ''}`}
                  onClick={() => openNav({ stops: [p] })} style={{ cursor: 'pointer' }}>
                 <circle cx={p.x} cy={p.y} r="17" fill={isSel ? '#3b82f6' : '#34d399'} opacity="0.16">
-                  <animate attributeName="r" values="15;20;15" dur="2s" repeatCount="indefinite" />
+                  <animate attributeName="r" values="15;20;15" dur="3.4s" repeatCount="indefinite" />
                 </circle>
                 <circle cx={p.x} cy={p.y} r={isSel ? 15 : 13} fill="#fff" stroke={isSel ? '#3b82f6' : '#34d399'} strokeWidth={isSel ? 3 : 2.4} />
                 <text x={p.x} y={p.y + 4.5} textAnchor="middle" fontSize="13">{p.emoji}</text>
