@@ -2357,3 +2357,137 @@
   line-height: 1.45;
   padding-top: 3px;
 }
+
+/* ===================== Fridge: add/edit ===================== */
+.head-add {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--grad-green);
+  box-shadow: var(--shadow-green);
+  transition: transform 0.15s ease;
+}
+.head-add:active { transform: scale(0.92); }
+.fridge-card { text-align: left; cursor: pointer; }
+
+/* segmented control */
+.seg {
+  display: flex;
+  gap: 6px;
+  background: #eef1f5;
+  border-radius: 14px;
+  padding: 4px;
+}
+.seg__opt {
+  flex: 1;
+  padding: 10px 6px;
+  border-radius: 11px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  transition: all 0.15s ease;
+}
+.seg__opt.is-on {
+  color: var(--text-dark);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+/* stepper */
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--bg);
+  border-radius: 14px;
+  padding: 8px 10px;
+}
+.stepper--sm { padding: 5px 6px; gap: 8px; background: #eef1f5; }
+.stepper__btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  color: var(--text-dark);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.14s ease;
+}
+.stepper--sm .stepper__btn { width: 34px; height: 34px; }
+.stepper__btn:active { transform: scale(0.9); }
+.stepper__val {
+  flex: 1;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 800;
+}
+.stepper--sm .stepper__val { flex: 0 0 30px; font-size: 17px; }
+.stepper__val span { font-size: 14px; font-weight: 600; color: var(--text-secondary); }
+
+.preset-row { display: flex; gap: 7px; margin-top: 10px; }
+.preset {
+  flex: 1;
+  padding: 9px 4px;
+  border-radius: 11px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.preset.is-on { color: #fff; background: var(--grad-green); box-shadow: none; }
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18px;
+  padding: 12px 2px;
+  cursor: pointer;
+}
+.toggle-row__title { font-size: 15px; font-weight: 700; }
+.toggle-row__sub { font-size: 12.5px; color: var(--text-secondary); margin-top: 1px; }
+
+.sheet__delete {
+  width: 100%;
+  margin-top: 10px;
+  padding: 13px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #dc2626;
+  background: #fee2e2;
+}
+
+/* ===================== Recipes: servings + amounts + cook ===================== */
+.cook-note {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green-dark);
+  margin: 6px 2px 12px;
+}
+.serv {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: var(--bg);
+}
+.serv__title { font-size: 15px; font-weight: 800; }
+.serv__sub { font-size: 12.5px; color: var(--text-secondary); margin-top: 1px; }
+.serv .stepper { flex: 0 0 auto; width: 128px; }
+
+.ingredient__main { flex: 1; min-width: 0; }
+.ingredient__main .ingredient__name { display: block; font-size: 15px; font-weight: 700; }
+.ingredient__amt { font-size: 12.5px; color: var(--text-secondary); font-weight: 600; }
