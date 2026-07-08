@@ -16,6 +16,12 @@ const RECIPES = [
       { name: 'Garlic', emoji: '🧄', category: 'Fruit', have: false },
       { name: 'Parmesan', emoji: '🧀', category: 'Dairy', have: false },
     ],
+    steps: [
+      'Boil the pasta in salted water for about 9 minutes.',
+      'Sauté chopped garlic and onion in olive oil until soft.',
+      'Add the chopped tomatoes and simmer for 8 minutes.',
+      'Drain the pasta, toss with the sauce and top with parmesan.',
+    ],
   },
   {
     id: 'bowl', name: 'Breakfast Bowl', emoji: '🥣', time: '10 min', level: 'Easy',
@@ -27,6 +33,11 @@ const RECIPES = [
       { name: 'Honey', emoji: '🍯', category: 'Pantry', have: true },
       { name: 'Berries', emoji: '🫐', category: 'Fruit', have: true },
     ],
+    steps: [
+      'Spoon the yogurt into a bowl.',
+      'Top with sliced banana, berries and oats.',
+      'Drizzle with honey and serve.',
+    ],
   },
   {
     id: 'wraps', name: 'Family Wraps', emoji: '🌯', time: '15 min', level: 'Medium',
@@ -37,6 +48,11 @@ const RECIPES = [
       { name: 'Lettuce', emoji: '🥬', category: 'Fruit', have: true },
       { name: 'Cheese', emoji: '🧀', category: 'Dairy', have: false },
       { name: 'Salsa', emoji: '🌶️', category: 'Pantry', have: false },
+    ],
+    steps: [
+      'Warm the tortillas in a dry pan.',
+      'Fill each with chicken, lettuce and cheese.',
+      'Add a spoon of salsa and roll up tightly.',
     ],
   },
   {
@@ -50,6 +66,12 @@ const RECIPES = [
       { name: 'Broth', emoji: '🍲', category: 'Pantry', have: true },
       { name: 'Garlic', emoji: '🧄', category: 'Fruit', have: true },
       { name: 'Cream', emoji: '🥛', category: 'Dairy', have: false },
+    ],
+    steps: [
+      'Chop all the vegetables into small pieces.',
+      'Sauté the onion and garlic until fragrant.',
+      'Add the vegetables and broth, simmer for 20 minutes.',
+      'Blend smooth, stir in cream and season to taste.',
     ],
   },
 ]
@@ -205,6 +227,16 @@ export default function Recipes({ go, toast, list, favorites, onFav }) {
                   {ing.have
                     ? <StatusChip status="fresh" dot={false}>In fridge</StatusChip>
                     : <StatusChip status="low" dot={false}>Missing</StatusChip>}
+                </div>
+              ))}
+            </div>
+
+            <div className="sheet__label">Preparation</div>
+            <div className="steps">
+              {open.steps.map((s, i) => (
+                <div className="step" key={i}>
+                  <span className="step__num">{i + 1}</span>
+                  <span className="step__text">{s}</span>
                 </div>
               ))}
             </div>

@@ -102,6 +102,12 @@ export default function StoreNav({ stops, onClose, onFinish, toast }) {
   }
 
   const hasNext = index < stops.length - 1
+  // "I found it" → skip the live walk and move on
+  const found = () => {
+    if (hasNext) setIndex(index + 1)
+    else if (isTour) onFinish?.(stops)
+    else onClose()
+  }
   const follow = `translate(180 180) scale(${Z}) rotate(${-headingDeg}) translate(${-pos.x} ${-pos.y})`
   const routeD = 'M' + route.pts.map((p) => `${p.x} ${p.y}`).join(' L ')
   const upright = (x, y) => `rotate(${headingDeg} ${x} ${y})`
@@ -211,7 +217,12 @@ export default function StoreNav({ stops, onClose, onFinish, toast }) {
             </button>
           )
         ) : (
-          <button className="navmap__exit navmap__exit--quit" onClick={onClose}>Exit navigation</button>
+          <>
+            <button className="navmap__exit navmap__exit--end" onClick={found}>
+              <Icon name="check" size={18} strokeWidth={2.6} /> I found it{hasNext ? ` · Next: ${stops[index + 1].name}` : ''}
+            </button>
+            <button className="navmap__exit navmap__exit--slim" onClick={onClose}>Exit navigation</button>
+          </>
         )}
       </div>
     </div>

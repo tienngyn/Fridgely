@@ -16,7 +16,7 @@ const EXPIRING = [
   { emoji: '🥛', name: 'Milk', when: 'in 2 days' },
 ]
 
-export default function Home({ go, toast }) {
+export default function Home({ go, toast, onNearby }) {
   const [warned, setWarned] = useState(true)
 
   return (
@@ -64,6 +64,40 @@ export default function Home({ go, toast }) {
           <Icon name="cart" size={18} /> Start Shopping
         </button>
       </div>
+
+      {/* This month savings / waste */}
+      <div className="savings">
+        <div className="savings__head">
+          <span className="savings__title">This month</span>
+          <span className="savings__badge"><Icon name="leaf" size={13} /> Less waste</span>
+        </div>
+        <div className="savings__stats">
+          <div className="savings__stat">
+            <div className="savings__num">€12,40</div>
+            <div className="savings__lbl">money saved</div>
+          </div>
+          <div className="savings__div" />
+          <div className="savings__stat">
+            <div className="savings__num">1,3 kg</div>
+            <div className="savings__lbl">food rescued</div>
+          </div>
+          <div className="savings__div" />
+          <div className="savings__stat">
+            <div className="savings__num">9</div>
+            <div className="savings__lbl">items used up</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Stores with Fridgely nearby */}
+      <button className="nearby-card" onClick={onNearby}>
+        <span className="nearby-card__icn"><Icon name="pin" size={20} /></span>
+        <div className="nearby-card__body">
+          <div className="nearby-card__title">Stores with Fridgely nearby</div>
+          <div className="nearby-card__sub">4 compatible markets within 3 km</div>
+        </div>
+        <Icon name="chevron" size={18} className="muted" />
+      </button>
 
       {/* Fridge Overview */}
       <Card style={{ marginTop: 16 }}>

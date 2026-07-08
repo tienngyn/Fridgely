@@ -2129,3 +2129,231 @@
   background: var(--grad-green);
   flex-shrink: 0;
 }
+
+/* found-it slim exit in nav */
+.navmap__exit--slim {
+  background: none;
+  color: var(--text-secondary);
+  box-shadow: none;
+  padding: 11px;
+  margin-top: 6px;
+}
+
+/* ===================== Home: savings + nearby ===================== */
+.savings {
+  background: linear-gradient(135deg, #ecfdf5, #eff6ff);
+  border: 1px solid rgba(52, 211, 153, 0.22);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-top: 16px;
+}
+.savings__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.savings__title {
+  font-size: 15px;
+  font-weight: 800;
+}
+.savings__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: var(--green-dark);
+  background: var(--mint);
+  padding: 5px 10px;
+  border-radius: 999px;
+}
+.savings__stats {
+  display: flex;
+  align-items: center;
+}
+.savings__stat {
+  flex: 1;
+  text-align: center;
+}
+.savings__num {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-dark);
+}
+.savings__lbl {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+.savings__div {
+  width: 1px;
+  align-self: stretch;
+  background: rgba(31, 41, 55, 0.08);
+  margin: 4px 0;
+}
+
+.nearby-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  text-align: left;
+  margin-top: 16px;
+  padding: 15px;
+  border-radius: var(--radius);
+  background: #fff;
+  box-shadow: var(--shadow);
+  transition: transform 0.14s ease;
+}
+.nearby-card:active { transform: scale(0.99); }
+.nearby-card__icn {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--grad-brand);
+  box-shadow: var(--shadow-blue);
+  flex-shrink: 0;
+}
+.nearby-card__body { flex: 1; }
+.nearby-card__title { font-size: 15px; font-weight: 800; }
+.nearby-card__sub { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+
+/* ===================== Nearby stores overlay ===================== */
+.nearby {
+  position: absolute;
+  inset: 0;
+  z-index: 85;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  animation: navIn 0.3s ease both;
+}
+.nearby__map {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+}
+.nearby__svg { width: 100%; height: 100%; display: block; }
+.nearby__close {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 12px);
+  left: 16px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  display: grid;
+  place-items: center;
+  color: var(--text-dark);
+}
+.nearby__pill {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 16px);
+  right: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+.nearby__pill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+}
+.nearby__sheet {
+  flex-shrink: 0;
+  background: #fff;
+  border-radius: 28px 28px 0 0;
+  margin-top: -26px;
+  padding: 18px 18px calc(env(safe-area-inset-bottom, 0px) + 18px);
+  box-shadow: 0 -10px 34px rgba(0, 0, 0, 0.14);
+  position: relative;
+  max-height: 52%;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.nearby__sheet::-webkit-scrollbar { display: none; }
+.nearby__title { font-size: 19px; font-weight: 800; }
+.nearby__sub { font-size: 13px; color: var(--text-secondary); margin-top: 3px; margin-bottom: 12px; }
+.nearby__list { display: flex; flex-direction: column; gap: 8px; }
+.nearby__store {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  text-align: left;
+  padding: 11px 12px;
+  border-radius: 16px;
+  background: var(--bg);
+  transition: background 0.14s ease;
+}
+.nearby__store:active { background: #eef2f7; }
+.nearby__store-icn {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  color: var(--green-dark);
+  background: var(--mint);
+  flex-shrink: 0;
+}
+.nearby__store-icn.is-main { color: #fff; background: var(--grad-brand); }
+.nearby__store-body { flex: 1; min-width: 0; }
+.nearby__store-name {
+  font-size: 15px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.nearby__tag {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #1d4ed8;
+  background: var(--accent-blue);
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+.nearby__store-meta { font-size: 12.5px; color: var(--text-secondary); margin-top: 1px; }
+.nearby__store-offers { text-align: center; flex-shrink: 0; }
+.nearby__offers-num { font-size: 18px; font-weight: 800; color: var(--green-dark); }
+.nearby__offers-lbl { display: block; font-size: 10.5px; font-weight: 700; color: var(--text-secondary); }
+
+/* ===================== Recipe preparation steps ===================== */
+.steps { display: flex; flex-direction: column; gap: 10px; }
+.step { display: flex; gap: 12px; align-items: flex-start; }
+.step__num {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+  background: var(--grad-brand);
+}
+.step__text {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--text-dark);
+  line-height: 1.45;
+  padding-top: 3px;
+}

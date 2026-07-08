@@ -10,6 +10,7 @@ import Recipes from './screens/Recipes'
 import Household from './screens/Household'
 import StoreNav from './screens/StoreNav'
 import Checkout from './screens/Checkout'
+import NearbyStores from './screens/NearbyStores'
 import './styles/components.css'
 import './styles/screens.css'
 
@@ -45,6 +46,7 @@ export default function App() {
   const [toast, setToast] = useState(null)
   const [navTarget, setNavTarget] = useState(null)
   const [checkout, setCheckout] = useState(null)
+  const [nearbyOpen, setNearbyOpen] = useState(false)
   // saved recipes (a Premium feature) — a Set of recipe ids
   const [favorites, setFavorites] = useState(() => new Set())
   const toggleFavorite = useCallback((id) => {
@@ -106,7 +108,7 @@ export default function App() {
 
   const screens = {
     onboarding: <Onboarding onStart={() => go('home')} />,
-    home: <Home go={go} toast={showToast} list={listApi} />,
+    home: <Home go={go} toast={showToast} list={listApi} onNearby={() => setNearbyOpen(true)} />,
     list: <ShoppingList go={go} toast={showToast} list={listApi} />,
     map: <StoreMap go={go} toast={showToast} openNav={setNavTarget} list={listApi} />,
     fridge: <Fridge go={go} toast={showToast} list={listApi} />,
@@ -146,6 +148,8 @@ export default function App() {
           {checkout && (
             <Checkout items={checkout} onClose={() => setCheckout(null)} toast={showToast} />
           )}
+
+          {nearbyOpen && <NearbyStores onClose={() => setNearbyOpen(false)} toast={showToast} />}
 
           {toast && (
             <div className="toast">
