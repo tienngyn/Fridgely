@@ -174,9 +174,6 @@ export default function ShoppingList({ go, toast, list }) {
           <PrimaryButton variant="blue" icon="route" onClick={() => go('map')}>
             Optimize Route
           </PrimaryButton>
-          <PrimaryButton variant="ghost" icon="card" disabled demo>
-            Pay with Fridgely
-          </PrimaryButton>
         </div>
       )}
     </div>
