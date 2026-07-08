@@ -33,9 +33,9 @@ const CATALOG = [
 ]
 
 const OFFERS = [
-  { emoji: '🍅', name: 'Tomatoes', note: '−20% today', price: '€1,99', old: '€2,49', aisle: 'Aisle 2 · Row 2' },
-  { emoji: '🍝', name: 'Pasta', note: 'Buy 2, pay 1', price: '€1,79', old: '€3,58', aisle: 'Aisle 4 · Row 1' },
-  { emoji: '☕', name: 'Coffee', note: '−15% member deal', price: '€4,24', old: '€4,99', aisle: 'Aisle 4 · Row 3' },
+  { emoji: '🍅', name: 'Tomatoes', category: 'Fruit', note: '−20% today', price: '€1,99', old: '€2,49', aisle: 'Aisle 2 · Row 2' },
+  { emoji: '🍝', name: 'Pasta', category: 'Pantry', note: 'Buy 2, pay 1', price: '€1,79', old: '€3,58', aisle: 'Aisle 4 · Row 1' },
+  { emoji: '☕', name: 'Coffee', category: 'Pantry', note: '−15% member deal', price: '€4,24', old: '€4,99', aisle: 'Aisle 4 · Row 3' },
 ]
 
 const AISLE_NAMES = ['Dairy', 'Produce', 'Bakery', 'Pantry', 'Drinks']
@@ -62,8 +62,15 @@ export default function StoreMap({ go, toast, openNav, list }) {
   const [storeOpen, setStoreOpen] = useState(false)
   const store = STORES.find((s) => s.id === storeId)
 
-  const { items, activeListId, listDay, week, lists } = list
+  const { items, activeListId, listDay, week, lists, addItems } = list
   const activeList = lists.find((l) => l.id === activeListId)
+  const [addedOffers, setAddedOffers] = useState(new Set())
+
+  const addOffer = (o) => {
+    addItems(activeListId, listDay, [{ name: o.name, emoji: o.emoji, category: o.category }])
+    setAddedOffers((prev) => new Set(prev).add(o.name))
+    toast(`${o.name} added to ${week[listDay].short}`)
+  }
 
   // products still to buy on the active list for the selected day, matched to shelves
   const routeItems = useMemo(() => {
@@ -330,19 +337,29 @@ export default function StoreMap({ go, toast, openNav, list }) {
               </div>
             </div>
             <div className="sheet__list">
-              {OFFERS.map((o) => (
-                <div className="offer" key={o.name}>
-                  <span className="product__emoji">{o.emoji}</span>
-                  <div className="product__body">
-                    <div className="product__name">{o.name}</div>
-                    <div className="product__meta">📍 {o.aisle}</div>
+              {OFFERS.map((o) => {
+                const added = addedOffers.has(o.name)
+                return (
+                  <div className="offer" key={o.name}>
+                    <span className="product__emoji">{o.emoji}</span>
+                    <div className="product__body">
+                      <div className="product__name">{o.name}</div>
+                      <div className="product__meta">📍 {o.aisle}</div>
+                    </div>
+                    <div className="offer__price">
+                      <StatusChip status="expire" dot={false}>{o.note}</StatusChip>
+                      <div className="offer__amounts"><span className="offer__new">{o.price}</span> <span className="offer__old">{o.old}</span></div>
+                    </div>
+                    <button
+                      className={`offer__add ${added ? 'is-added' : ''}`}
+                      onClick={() => !added && addOffer(o)}
+                      aria-label={added ? `${o.name} added` : `Add ${o.name} to list`}
+                    >
+                      <Icon name={added ? 'check' : 'plus'} size={17} strokeWidth={2.6} />
+                    </button>
                   </div>
-                  <div className="offer__price">
-                    <StatusChip status="expire" dot={false}>{o.note}</StatusChip>
-                    <div className="offer__amounts"><span className="offer__new">{o.price}</span> <span className="offer__old">{o.old}</span></div>
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
             <PrimaryButton icon="route" onClick={() => { setOffersOpen(false); routeItems.length ? openNav({ stops: routeItems }) : go('list') }} style={{ marginTop: 16 }}>
               Start Tour

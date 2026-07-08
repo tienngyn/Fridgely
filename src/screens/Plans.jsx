@@ -61,7 +61,7 @@ export default function Plans({ onContinue, onBack }) {
           ))}
         </div>
         <button className="plan-cta plan-cta--pre" onClick={onContinue}>
-          Start 7-day free trial
+          Start 30-day free trial
         </button>
       </div>
 
