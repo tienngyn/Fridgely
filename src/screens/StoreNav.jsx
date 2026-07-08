@@ -18,8 +18,23 @@ const dist2 = (a, b) => Math.hypot(a.x - b.x, a.y - b.y)
 const segHeading = (s) => Math.atan2(s.b.x - s.a.x, -(s.b.y - s.a.y)) * (180 / Math.PI)
 const shortAngle = (a, b) => (((b - a + 540) % 360) - 180)
 
+// second (upper) cross-aisle, in the blank strip above the shelves
+const TOP_Y = 36
+
 function buildRoute(start, dest) {
-  const raw = [start, { x: start.x, y: AISLE_Y }, { x: dest.x, y: AISLE_Y }, { x: dest.x, y: dest.y }]
+  let raw
+  if (Math.abs(start.x - dest.x) < 0.5) {
+    // already in the same lane — walk straight there, no detour needed
+    raw = [start, dest]
+  } else {
+    // route via whichever cross-aisle (top or bottom) is the shorter detour,
+    // so we don't always backtrack down to the bottom and pass the target's
+    // row on the way — that's what made it look like walking past and back
+    const viaBottom = Math.abs(start.y - AISLE_Y) + Math.abs(dest.x - start.x) + Math.abs(dest.y - AISLE_Y)
+    const viaTop = Math.abs(start.y - TOP_Y) + Math.abs(dest.x - start.x) + Math.abs(dest.y - TOP_Y)
+    const crossY = viaTop < viaBottom ? TOP_Y : AISLE_Y
+    raw = [start, { x: start.x, y: crossY }, { x: dest.x, y: crossY }, { x: dest.x, y: dest.y }]
+  }
   const pts = raw.filter((p, i, a) => i === 0 || dist2(p, a[i - 1]) > 0.5)
   const segs = []
   let total = 0
