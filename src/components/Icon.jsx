@@ -114,6 +114,19 @@ const paths = {
   flame: (
     <path d="M12 3s5 4 5 9a5 5 0 0 1-10 0c0-1.5.7-2.8 1.5-3.5C8.5 10 9 11 9 11s.5-3 3-8Z" />
   ),
+  heart: (
+    <path d="M12 20.5C10.5 19.2 4 14.6 4 9.8A4.3 4.3 0 0 1 12 7.3 4.3 4.3 0 0 1 20 9.8c0 4.8-6.5 9.4-8 10.7Z" />
+  ),
+  crown: (
+    <path d="M4 8l3.5 3L12 5l4.5 6L20 8l-1.5 10h-13L4 8Z" />
+  ),
+  check2: <path d="m5 12 4.5 4.5L19 6" />,
+  lock: (
+    <>
+      <rect x="5" y="11" width="14" height="9" rx="2" />
+      <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+    </>
+  ),
 }
 
 export default function Icon({ name, size = 24, strokeWidth, className, style }) {

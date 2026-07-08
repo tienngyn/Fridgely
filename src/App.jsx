@@ -45,6 +45,15 @@ export default function App() {
   const [toast, setToast] = useState(null)
   const [navTarget, setNavTarget] = useState(null)
   const [checkout, setCheckout] = useState(null)
+  // saved recipes (a Premium feature) — a Set of recipe ids
+  const [favorites, setFavorites] = useState(() => new Set())
+  const toggleFavorite = useCallback((id) => {
+    setFavorites((prev) => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
+  }, [])
 
   // ===== shared shopping-list state (multiple lists, planned per weekday) =====
   const week = useMemo(buildWeek, [])
@@ -101,7 +110,7 @@ export default function App() {
     list: <ShoppingList go={go} toast={showToast} list={listApi} />,
     map: <StoreMap go={go} toast={showToast} openNav={setNavTarget} list={listApi} />,
     fridge: <Fridge go={go} toast={showToast} list={listApi} />,
-    recipes: <Recipes go={go} toast={showToast} list={listApi} />,
+    recipes: <Recipes go={go} toast={showToast} list={listApi} favorites={favorites} onFav={toggleFavorite} />,
     household: <Household go={go} toast={showToast} list={listApi} />,
   }
 

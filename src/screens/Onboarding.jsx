@@ -1,7 +1,15 @@
+import { useState } from 'react'
 import Logo from '../components/Logo'
 import Icon from '../components/Icon'
+import Plans from './Plans'
 
 export default function Onboarding({ onStart }) {
+  const [step, setStep] = useState('welcome')
+
+  if (step === 'plans') {
+    return <Plans onContinue={onStart} onBack={() => setStep('welcome')} />
+  }
+
   return (
     <div className="onb">
       {/* soft decorative shapes */}
@@ -39,7 +47,7 @@ export default function Onboarding({ onStart }) {
         </div>
       </div>
 
-      <button className="onb__btn" onClick={onStart}>
+      <button className="onb__btn" onClick={() => setStep('plans')}>
         Get Started
         <Icon name="chevron" size={20} strokeWidth={2.4} />
       </button>
