@@ -40,6 +40,13 @@ const OFFERS = [
 
 const AISLE_NAMES = ['Dairy', 'Produce', 'Bakery', 'Pantry', 'Drinks']
 
+// nearby stores that are "compatible with Fridgely"
+const STORES = [
+  { id: 'center', name: 'Fridgely Market', area: 'Center', distance: '0.4 km', open: '22:00', min: 18 },
+  { id: 'green', name: 'GreenMart', area: 'Northside', distance: '1.2 km', open: '20:00', min: 22 },
+  { id: 'fresh', name: 'FreshBox', area: 'Central Station', distance: '2.1 km', open: '24 h', min: 26 },
+]
+
 // route that stays in the walkways: drop to the main aisle, slide across, go up the lane
 const routeTo = (p) => `M ${ENTRANCE.x} ${ENTRANCE.y} L ${ENTRANCE.x} ${AISLE_Y} L ${p.x} ${AISLE_Y} L ${p.x} ${p.y}`
 
@@ -51,6 +58,9 @@ export default function StoreMap({ go, toast, openNav, list }) {
   const [selected, setSelected] = useState(null)
   const [focused, setFocused] = useState(false)
   const [offersOpen, setOffersOpen] = useState(false)
+  const [storeId, setStoreId] = useState('center')
+  const [storeOpen, setStoreOpen] = useState(false)
+  const store = STORES.find((s) => s.id === storeId)
 
   const { items, activeListId, listDay, week, lists } = list
   const activeList = lists.find((l) => l.id === activeListId)
@@ -102,6 +112,16 @@ export default function StoreMap({ go, toast, openNav, list }) {
           <div className="screen-sub">{activeList?.name} · {week[listDay].full}</div>
         </div>
       </div>
+
+      {/* current store + switcher */}
+      <button className="store-bar" onClick={() => setStoreOpen(true)}>
+        <span className="store-bar__icn"><Icon name="pin" size={20} /></span>
+        <div className="store-bar__body">
+          <div className="store-bar__name">{store.name} · {store.area}</div>
+          <div className="store-bar__meta">{store.distance} away · open until {store.open}</div>
+        </div>
+        <span className="store-bar__change">Change <Icon name="chevron" size={14} strokeWidth={2.6} /></span>
+      </button>
 
       {/* product search */}
       <div className="search">
@@ -237,7 +257,7 @@ export default function StoreMap({ go, toast, openNav, list }) {
           <Card style={{ marginTop: 18 }}>
             <div className="route-stat-card">
               <div className="route-stat">
-                <div className="route-stat__big">18 min</div>
+                <div className="route-stat__big">{store.min} min</div>
                 <div className="route-stat__lbl">Fastest route</div>
               </div>
               <div className="route-stat__div" />
@@ -261,6 +281,40 @@ export default function StoreMap({ go, toast, openNav, list }) {
             )}
           </div>
         </>
+      )}
+
+      {/* store picker sheet */}
+      {storeOpen && (
+        <div className="sheet" onClick={() => setStoreOpen(false)}>
+          <div className="sheet__panel" onClick={(e) => e.stopPropagation()}>
+            <div className="sheet__grip" />
+            <div className="sheet__head">
+              <span className="ai-card__icn" style={{ background: 'var(--grad-brand)' }}><Icon name="pin" size={20} /></span>
+              <div>
+                <div className="sheet__title">Stores near you</div>
+                <div className="sheet__sub">Supermarkets compatible with Fridgely</div>
+              </div>
+            </div>
+            <div className="sheet__list">
+              {STORES.map((s) => (
+                <button
+                  key={s.id}
+                  className={`store-opt ${s.id === storeId ? 'is-active' : ''}`}
+                  onClick={() => { setStoreId(s.id); setStoreOpen(false); toast(`Switched to ${s.name}`) }}
+                >
+                  <span className="store-opt__icn"><Icon name="pin" size={19} /></span>
+                  <div className="product__body">
+                    <div className="product__name">{s.name}</div>
+                    <div className="product__meta">{s.area} · {s.distance} · open until {s.open}</div>
+                  </div>
+                  {s.id === storeId
+                    ? <span className="store-opt__check"><Icon name="check" size={16} strokeWidth={3} /></span>
+                    : <StatusChip status="fresh" dot={false}>Compatible</StatusChip>}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
       )}
 
       {/* offers sheet */}

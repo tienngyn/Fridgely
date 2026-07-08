@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Card from '../components/Card'
 import StatusChip from '../components/StatusChip'
 import Icon from '../components/Icon'
@@ -9,7 +10,15 @@ const FRIDGE_PREVIEW = [
   { emoji: '🥣', name: 'Yogurt', status: 'low', label: 'Running low' },
 ]
 
+// items about to go bad → drives the expiry warning
+const EXPIRING = [
+  { emoji: '🍅', name: 'Tomatoes', when: 'today' },
+  { emoji: '🥛', name: 'Milk', when: 'in 2 days' },
+]
+
 export default function Home({ go, toast }) {
+  const [warned, setWarned] = useState(true)
+
   return (
     <div className="rise">
       <div className="home-greet">
@@ -19,6 +28,27 @@ export default function Home({ go, toast }) {
         </div>
         <div className="avatar" onClick={() => go('household')} style={{ cursor: 'pointer' }}>MM</div>
       </div>
+
+      {/* Expiry warning */}
+      {warned && EXPIRING.length > 0 && (
+        <div className="expiry" onClick={() => go('fridge')}>
+          <span className="expiry__icn"><Icon name="clock" size={20} strokeWidth={2.3} /></span>
+          <div className="expiry__body">
+            <div className="expiry__title">
+              {EXPIRING.length} items expire soon
+              <span className="expiry__emojis">{EXPIRING.map((e) => e.emoji).join(' ')}</span>
+            </div>
+            <div className="expiry__sub">Use your {EXPIRING[0].name.toLowerCase()} {EXPIRING[0].when} to avoid waste</div>
+          </div>
+          <button
+            className="expiry__close"
+            onClick={(e) => { e.stopPropagation(); setWarned(false) }}
+            aria-label="Dismiss"
+          >
+            <Icon name="plus" size={16} style={{ transform: 'rotate(45deg)' }} />
+          </button>
+        </div>
+      )}
 
       {/* Today's Shopping hero */}
       <div className="hero-card">
