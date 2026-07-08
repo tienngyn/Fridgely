@@ -2509,3 +2509,163 @@
 .ingredient__main { flex: 1; min-width: 0; }
 .ingredient__main .ingredient__name { display: block; font-size: 15px; font-weight: 700; }
 .ingredient__amt { font-size: 12.5px; color: var(--text-secondary); font-weight: 600; }
+
+/* ===================== Recipes: own-recipe editor ===================== */
+.mine-tag {
+  display: inline-block;
+  margin-left: 7px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #1d4ed8;
+  background: var(--accent-blue);
+  padding: 3px 8px;
+  border-radius: 7px;
+  vertical-align: middle;
+}
+.add-recipe-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 16px;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--green-dark);
+  background: var(--mint);
+  border: 1.5px dashed rgba(52, 211, 153, 0.5);
+  transition: transform 0.14s ease;
+}
+.add-recipe-cta:active { transform: scale(0.99); }
+
+.emoji-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 2px 4px;
+  scrollbar-width: none;
+}
+.emoji-row::-webkit-scrollbar { display: none; }
+.emoji-opt {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  font-size: 21px;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  border: 2px solid transparent;
+  transition: all 0.14s ease;
+}
+.emoji-opt.is-on { border-color: var(--green); background: var(--mint); }
+
+.gradient-row { display: flex; gap: 9px; }
+.gradient-opt {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.14s ease;
+}
+.gradient-opt.is-on { box-shadow: 0 0 0 2.5px var(--blue); transform: scale(1.08); }
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.editor-ings {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.editor-ing {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.editor-ing__name {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--bg);
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+}
+.editor-ing__qty {
+  width: 46px;
+  padding: 10px 6px;
+  border-radius: 12px;
+  background: var(--bg);
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+.editor-ing__unit {
+  width: 76px;
+  padding: 10px 4px;
+  border-radius: 12px;
+  background: var(--bg);
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+.editor-remove {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: #dc2626;
+  background: #fee2e2;
+}
+.editor-addline {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+  padding: 10px 4px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--green-dark);
+}
+
+.editor-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.editor-step {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.editor-step__text {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--bg);
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+}
